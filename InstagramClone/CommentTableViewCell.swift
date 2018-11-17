@@ -62,7 +62,7 @@ class CommentTableViewCell: UITableViewCell {
         nameLabel.isUserInteractionEnabled = true
     }
     
-    func nameLabel_TouchUpInside() {
+    @objc func nameLabel_TouchUpInside() {
         if let id = user?.id {
             delegate?.goToProfileUserVC(userId: id)
         }

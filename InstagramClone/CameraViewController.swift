@@ -47,7 +47,7 @@ class CameraViewController: UIViewController {
         view.endEditing(true)
     }
     
-    func handleSelectPhoto() {
+    @objc func handleSelectPhoto() {
         let pickerController = UIImagePickerController()
         pickerController.delegate = self
         pickerController.mediaTypes = ["public.image", "public.movie"]
@@ -56,7 +56,7 @@ class CameraViewController: UIViewController {
     @IBAction func shareButton_TouchUpInside(_ sender: Any) {
         view.endEditing(true)
         ProgressHUD.show("Waiting...", interaction: false)
-        if let profileImg = self.selectedImage, let imageData = UIImageJPEGRepresentation(profileImg, 0.1) {
+        if let profileImg = self.selectedImage, let imageData = profileImg.jpegData(compressionQuality: 0.1) {
             let ratio = profileImg.size.width / profileImg.size.height
             HelperService.uploadDataToServer(data: imageData, videoUrl: self.videoUrl, ratio: ratio, caption: captionTextView.text!, onSuccess: {
             self.clean()
@@ -88,7 +88,10 @@ class CameraViewController: UIViewController {
     
 }
 extension CameraViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+// Local variable inserted by Swift 4.2 migrator.
+let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+
         print("did Finish Picking Media")
         print(info)
         
@@ -114,7 +117,7 @@ extension CameraViewController: UIImagePickerControllerDelegate, UINavigationCon
         let asset = AVAsset(url: fileUrl)
         let imageGenerator = AVAssetImageGenerator(asset: asset)
         do {
-            let thumbnailCGImage = try imageGenerator.copyCGImage(at: CMTimeMake(7, 1), actualTime: nil)
+            let thumbnailCGImage = try imageGenerator.copyCGImage(at: CMTimeMake(value: 7, timescale: 1), actualTime: nil)
             return UIImage(cgImage: thumbnailCGImage)
         } catch let err {
             print(err)
@@ -129,4 +132,9 @@ extension CameraViewController: FilterViewControllerDelegate {
         self.photo.image = image
         self.selectedImage = image
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
 }

@@ -74,10 +74,10 @@ class HomeTableViewCell: UITableViewCell {
     @IBAction func volumeButton_TouchUpInSide(_ sender: UIButton) {
         if isMuted {
             isMuted = !isMuted
-            volumeButton.setImage(UIImage(named: "Icon_Volume"), for: UIControlState.normal)
+            volumeButton.setImage(UIImage(named: "Icon_Volume"), for: UIControl.State.normal)
         } else {
             isMuted = !isMuted
-            volumeButton.setImage(UIImage(named: "Icon_Mute"), for: UIControlState.normal)
+            volumeButton.setImage(UIImage(named: "Icon_Mute"), for: UIControl.State.normal)
             
         }
         player?.isMuted = isMuted
@@ -91,9 +91,9 @@ class HomeTableViewCell: UITableViewCell {
             return
         }
         if count != 0 {
-            likeCountButton.setTitle("\(count) likes", for: UIControlState.normal)
+            likeCountButton.setTitle("\(count) likes", for: UIControl.State.normal)
         } else {
-            likeCountButton.setTitle("Be the first like this", for: UIControlState.normal)
+            likeCountButton.setTitle("Be the first like this", for: UIControl.State.normal)
         }
        
     }
@@ -125,14 +125,14 @@ class HomeTableViewCell: UITableViewCell {
     }
     
     
-    func nameLabel_TouchUpInside() {
+    @objc func nameLabel_TouchUpInside() {
         if let id = user?.id {
             delegate?.goToProfileUserVC(userId: id)
         }
     }
 
     
-    func likeImageView_TouchUpInside() {
+    @objc func likeImageView_TouchUpInside() {
         Api.Post.incrementLikes(postId: post!.id!, onSucess: { (post) in
             self.updateLike(post: post)
             self.post?.likes = post.likes
@@ -144,7 +144,7 @@ class HomeTableViewCell: UITableViewCell {
         //incrementLikes(forRef: postRef)
     }
     
-    func commentImageView_TouchUpInside() {
+    @objc func commentImageView_TouchUpInside() {
       print("commentImageView_TouchUpInside")
         if let id = post?.id {
             delegate?.goToCommentVC(postId: id)

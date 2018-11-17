@@ -23,29 +23,29 @@ class CommentViewController: UIViewController {
         title = "Comment"
         tableView.dataSource = self
         tableView.estimatedRowHeight = 77
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         empty()
         handleTextField()
         loadComments()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
     
-    func keyboardWillShow(_ notification: NSNotification) {
+    @objc func keyboardWillShow(_ notification: NSNotification) {
         print(notification)
-        let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
+        let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
         UIView.animate(withDuration: 0.3) {
             self.constraintToBottom.constant = keyboardFrame!.height
             self.view.layoutIfNeeded()
 
         }
     }
-    func keyboardWillHide(_ notification: NSNotification) {
+    @objc func keyboardWillHide(_ notification: NSNotification) {
         UIView.animate(withDuration: 0.3) {
             self.constraintToBottom.constant = 0
             self.view.layoutIfNeeded()
@@ -77,16 +77,16 @@ class CommentViewController: UIViewController {
     }
     
     func handleTextField() {
-        commentTextField.addTarget(self, action: #selector(self.textFieldDidChange), for: UIControlEvents.editingChanged)
+        commentTextField.addTarget(self, action: #selector(self.textFieldDidChange), for: UIControl.Event.editingChanged)
     }
     
-    func textFieldDidChange() {
+    @objc func textFieldDidChange() {
         if let commentText = commentTextField.text, !commentText.isEmpty {
-            sendButton.setTitleColor(UIColor.black, for: UIControlState.normal)
+            sendButton.setTitleColor(UIColor.black, for: UIControl.State.normal)
             sendButton.isEnabled = true
             return
         }
-        sendButton.setTitleColor(UIColor.lightGray, for: UIControlState.normal)
+        sendButton.setTitleColor(UIColor.lightGray, for: UIControl.State.normal)
         sendButton.isEnabled = false
     }
     
@@ -131,7 +131,7 @@ class CommentViewController: UIViewController {
     func empty() {
         self.commentTextField.text = ""
         self.sendButton.isEnabled = false
-        sendButton.setTitleColor(UIColor.lightGray, for: UIControlState.normal)
+        sendButton.setTitleColor(UIColor.lightGray, for: UIControl.State.normal)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

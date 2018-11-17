@@ -58,8 +58,8 @@ class HeaderProfileCollectionReusableView: UICollectionReusableView {
         }
         
         if user?.id == Api.User.CURRENT_USER?.uid {
-            followButton.setTitle("Edit Profile", for: UIControlState.normal)
-            followButton.addTarget(self, action: #selector(self.goToSettingVC), for: UIControlEvents.touchUpInside)
+            followButton.setTitle("Edit Profile", for: UIControl.State.normal)
+            followButton.addTarget(self, action: #selector(self.goToSettingVC), for: UIControl.Event.touchUpInside)
 
         } else {
             updateStateFollowButton()
@@ -73,7 +73,7 @@ class HeaderProfileCollectionReusableView: UICollectionReusableView {
         self.followingCountLabel.text = ""
     }
     
-    func goToSettingVC() {
+    @objc func goToSettingVC() {
         delegate2?.goToSettingVC()
     }
     
@@ -91,10 +91,10 @@ class HeaderProfileCollectionReusableView: UICollectionReusableView {
         followButton.layer.cornerRadius = 5
         followButton.clipsToBounds = true
         
-        followButton.setTitleColor(UIColor.white, for: UIControlState.normal)
+        followButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
         followButton.backgroundColor = UIColor(red: 69/255, green: 142/255, blue: 255/255, alpha: 1)
-        followButton.setTitle("Follow", for: UIControlState.normal)
-        followButton.addTarget(self, action: #selector(self.followAction), for: UIControlEvents.touchUpInside)
+        followButton.setTitle("Follow", for: UIControl.State.normal)
+        followButton.addTarget(self, action: #selector(self.followAction), for: UIControl.Event.touchUpInside)
     }
     
     func configureUnFollowButton() {
@@ -103,13 +103,13 @@ class HeaderProfileCollectionReusableView: UICollectionReusableView {
         followButton.layer.cornerRadius = 5
         followButton.clipsToBounds = true
         
-        followButton.setTitleColor(UIColor.black, for: UIControlState.normal)
+        followButton.setTitleColor(UIColor.black, for: UIControl.State.normal)
         followButton.backgroundColor = UIColor.clear
-        followButton.setTitle("Following", for: UIControlState.normal)
-        followButton.addTarget(self, action: #selector(self.unFollowAction), for: UIControlEvents.touchUpInside)
+        followButton.setTitle("Following", for: UIControl.State.normal)
+        followButton.addTarget(self, action: #selector(self.unFollowAction), for: UIControl.Event.touchUpInside)
     }
     
-    func followAction() {
+    @objc func followAction() {
         if user!.isFollowing! == false {
             Api.Follow.followAction(withUser: user!.id!)
             configureUnFollowButton()
@@ -118,7 +118,7 @@ class HeaderProfileCollectionReusableView: UICollectionReusableView {
         }
     }
     
-    func unFollowAction() {
+    @objc func unFollowAction() {
         if user!.isFollowing! == true {
             Api.Follow.unFollowAction(withUser: user!.id!)
             configureFollowButton()
