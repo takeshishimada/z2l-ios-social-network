@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Cactacea
+import Alamofire
 
 class SignUpViewController: UIViewController {
     @IBOutlet weak var usernameTextField: UITextField!
@@ -92,17 +94,37 @@ class SignUpViewController: UIViewController {
     
     @IBAction func signUpBtn_TouchUpInside(_ sender: Any) {
         view.endEditing(true)
-        ProgressHUD.show("Waiting...", interaction: false)
+        let accountName = usernameTextField.text!
+        let displayName = emailTextField.text!
+        let password = passwordTextField.text!
+        let udid = UUID().uuidString
+
         if let profileImg = self.selectedImage, let imageData = profileImg.jpegData(compressionQuality: 0.1) {
             AuthService.signUp(username: usernameTextField.text!, email: emailTextField.text!, password: passwordTextField.text!, imageData: imageData, onSuccess: {
                 ProgressHUD.showSuccess("Success")
-                self.performSegue(withIdentifier: "signUpToTabbarVC", sender: nil)
+                
+                let request = PostSignUpBody(accountName: accountName, displayName: displayName, password: password, udid: udid, web: nil, birthday: nil, location: nil, bio: nil)
+                
+                Progress.show("Waiting...", interaction: false)
+                SessionsAPI.signUp(postSignUpBody: request) { [weak self] (result, error) in
+                    guard let self = self else { return }
+                    if let error = error {
+                        Progress.showError(error)
+                    } else {
+                        Session.authentication = result
+                        Progress.showSuccess("Success")
+                        self.performSegue(withIdentifier: "signUpToTabbarVC", sender: nil)
+                    }
+                }
+
             }, onError: { (errorString) in
                 ProgressHUD.showError(errorString!)
             })
         } else {
-             ProgressHUD.showError("Profile Image can't be empty")
+            ProgressHUD.showError("Profile Image can't be empty")
         }
+
+
     }
 }
 extension SignUpViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {

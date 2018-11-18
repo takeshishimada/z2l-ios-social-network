@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Cactacea
+
 class SignInViewController: UIViewController {
     
     @IBOutlet weak var emailTextField: UITextField!
@@ -42,7 +44,7 @@ class SignInViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if Api.User.CURRENT_USER != nil {
+        if Session.authentication != nil {
             self.performSegue(withIdentifier: "signInToTabbarVC", sender: nil)
             
         }
@@ -68,14 +70,31 @@ class SignInViewController: UIViewController {
     
     @IBAction func signInButton_TouchUpInside(_ sender: Any) {
         view.endEditing(true)
+        let udid = UUID().uuidString
+        let accountName = emailTextField.text!
+        let password = passwordTextField.text!
+
         ProgressHUD.show("Waiting...", interaction: false)
         AuthService.signIn(email: emailTextField.text!, password: passwordTextField.text!, onSuccess: {
             ProgressHUD.showSuccess("Success")
-            self.performSegue(withIdentifier: "signInToTabbarVC", sender: nil)
+            //            self.performSegue(withIdentifier: "signInToTabbarVC", sender: nil)
             
+            Progress.show("Waiting...", interaction: false)
+            SessionsAPI.signIn(accountName: accountName, password: password, udid: udid) { [weak self] (result, error) in
+                guard let self = self else { return }
+                if let error = error {
+                    Progress.showError(error)
+                } else {
+                    Session.authentication = result
+                    Progress.showSuccess("Success")
+                    self.performSegue(withIdentifier: "signInToTabbarVC", sender: nil)
+                }
+            }
+
         }, onError: { error in
             ProgressHUD.showError(error!)
         })
+
     }
     
     

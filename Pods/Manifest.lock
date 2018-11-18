@@ -1,6 +1,6 @@
 PODS:
   - Alamofire (4.5.1)
-  - Cactacea (18.11.3):
+  - Cactacea (18.11.5):
     - Alamofire (~> 4.5.0)
     - RxSwift (~> 4.0)
   - Firebase/Auth (3.10.0):
@@ -57,7 +57,7 @@ PODS:
   - SDWebImage/Core (3.8.2)
 
 DEPENDENCIES:
-  - Cactacea
+  - Cactacea (= 18.11.5)
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
@@ -87,7 +87,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
-  Cactacea: 22158027db29b4a759188411ce2b18ac813f9f27
+  Cactacea: e27589addcc749503f42da498583a4694a7fafc5
   Firebase: 387f37c7dca894a02708da9ff35ba147040eae9e
   FirebaseAnalytics: 9c67af0ebeb8d2146c9b4ea2616439affa947b58
   FirebaseAuth: 96e9674ff31d6e1f826d53e26aa003a57cab0295
@@ -104,6 +104,6 @@ SPEC CHECKSUMS:
   RxSwift: 5976ecd04fc2fefd648827c23de5e11157faa973
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
 
-PODFILE CHECKSUM: 73e0e2403132a86c7a6f1f1033ea7cffb772bbdc
+PODFILE CHECKSUM: 98992bdf734e571cb4c5e60f03c3645ddaa40d6a
 
 COCOAPODS: 1.5.3

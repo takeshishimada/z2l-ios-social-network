@@ -10,6 +10,7 @@ target 'InstagramClone' do
   pod 'Firebase/Storage'
   pod 'SDWebImage'
   pod 'KILabel'
+  pod 'Cactacea', '18.11.5'
   # Pods for InstagramClone
 
 end

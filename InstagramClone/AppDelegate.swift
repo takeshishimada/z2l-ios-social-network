@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-
+import Cactacea
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -22,6 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().tintColor = .black
         UITabBar.appearance().tintColor = .black
         FIRApp.configure()
+        CactaceaAPI.basePath = "http://localhost:9000"
+        CactaceaAPI.customHeaders["X-API-KEY"] = "78290547-ddd6-4cf2-8fe4-7dd241da3061"
+        CactaceaAPI.customHeaders["Content-Type"] = "application/json"
         return true
     }
 
